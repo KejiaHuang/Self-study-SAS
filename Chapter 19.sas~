@@ -1,0 +1,80 @@
+/*************
+ * Sending SAS output to an HTML file
+ */
+
+ods html file='D:/SASUniversityEdition/myfolders/learning/sample.html';
+title "Lising of Test_Scores";
+libname learn 'D:/SASUniversityEdition/myfolders/learning';
+proc print data=learn.test_score;
+	title2 "Sample of HTML Output - all defaults";
+	id ID;
+	var Name Score1-Score3;
+run;
+title "Descriptive Statistics";
+proc means data=learn.test_scores n mean min max;
+	var Score1-Score3;
+run;
+ods html close;
+
+
+/*****************
+ * Creating a table of contents for HTML output
+ */
+
+ods html body = 'body_sample.html'
+	contents='contents_sample.html'
+	frame = 'frame_sample.html'
+	path = '/folders/myfolders/learning'(url=none);
+title 'Using ODS to create a Table of Contents';
+proc print data=learn.test_score;
+	id ID;
+	var Name Score1-Score3;
+run;
+title "Descriptive Statistics";
+proc means data=learn.test_scores n mean min max;
+	var Score1-Score3;
+run;
+ods html close;
+
+/****************
+ * Choosing a style for HTML output
+ */
+ods html file = '/folders/myfolders/learning/styles.html'
+		style = FancyPrinter;
+title "Listing of Test_score";
+proc print data=learn.test_scores;
+	id ID;
+	var Name Score1-Score3;
+run;
+ods html close;
+
+/*****************
+ * Using an ODS Select statement to restrict PROC UNIVARIATE output
+ */
+ods select extremeobs;
+title "Extreme values of RBC";
+proc UNIVARIATE data=learn.blood;
+	id Subject;
+	var RBC;
+run;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
